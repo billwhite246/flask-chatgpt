@@ -1,6 +1,6 @@
 import os
 import openai
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 
 # 从环境变量中获取API密钥
 # api_key = os.getenv('OPENAI_API_KEY')
@@ -13,6 +13,11 @@ if not api_key:
 openai.api_key = api_key
 
 app = Flask(__name__)
+
+
+@app.route('/')
+def hello_world():
+    return render_template('index.html')
 
 
 @app.route('/api/chat', methods=['POST'])

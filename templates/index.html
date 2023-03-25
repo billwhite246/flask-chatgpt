@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Chat GPT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        #chat-container {
+            width: 80%;
+            height: 600px;
+            background-color: white;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            overflow-y: scroll;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .user-message {
+            background-color: #e0e0e0;
+            align-self: flex-end;
+        }
+
+        .bot-message {
+            background-color: #4caf50;
+            color: white;
+            align-self: flex-start;
+        }
+
+        #input-container {
+            width: 80%;
+            margin: 50px auto;
+        }
+
+        #input-box {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: none;
+        }
+
+        #submit-btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            color: white;
+            background-color: #4caf50;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <!-- 聊天内容将在这里显示 -->
+    </div>
+
+    <div id="input-container">
+        <textarea id="input-box" rows="3" placeholder="输入你的问题..."></textarea>
+        <button id="submit-btn">发送</button>
+    </div>
+
+</body>
+    <script>
+        const chatContainer = document.getElementById('chat-container');
+        const inputBox = document.getElementById('input-box');
+        const submitBtn = document.getElementById('submit-btn');
+
+        function appendMessage(content, className) {
+            const message = document.createElement('div');
+            message.classList.add('message', className);
+            message.textContent = content;
+            chatContainer.appendChild(message);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        async function fetchBotResponse(userInput) {
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: userInput }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    return data.response;
+                } else {
+                    throw new Error('服务器错误');
+                }
+            } catch (error) {
+                console.error('无法获取聊天机器人回复', error);
+                return '抱歉，我无法回答你的问题。';
+            }
+        }
+
+        async function handleUserInput() {
+            const userInput = inputBox.value.trim();
+            if (userInput) {
+                appendMessage(userInput, 'user-message');
+                inputBox.value = '';
+
+                const botResponse = await fetchBotResponse(userInput);
+                appendMessage(botResponse, 'bot-message');
+            }
+        }
+
+        submitBtn.addEventListener('click', handleUserInput);
+        inputBox.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                handleUserInput();
+            }
+        });
+    </script>
+</html>
