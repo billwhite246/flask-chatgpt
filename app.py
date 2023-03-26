@@ -20,6 +20,22 @@ def hello_world():
     return render_template('index.html')
 
 
+@app.route('/test/chat', methods=['GET'])
+def chat_with_gpt():
+    prompt = "What is the capital of France?"
+    response = openai.Completion.create(
+        engine="davinci-codex",
+        prompt=prompt,
+        max_tokens=150,
+        n=1,
+        stop=None,
+        temperature=0.5,
+    )
+
+    message = response.choices[0].text.strip()
+    return message
+
+
 @app.route('/api/chat', methods=['POST'])
 def chat():
     user_message = request.json.get('message', '')
