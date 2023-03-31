@@ -1,4 +1,5 @@
 import os
+import sys
 import openai
 from flask import Flask, request, jsonify, render_template
 
@@ -55,7 +56,7 @@ def chat():
 
         bot_response = response.choices[0].text.strip()
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error: {e}", file=sys.stderr)
         bot_response = "抱歉，我无法回答你的问题。"
 
     return jsonify({'response': bot_response})
