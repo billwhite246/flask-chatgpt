@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Generation</title>
+</head>
+<body>
+    <input type="text" id="description" placeholder="Enter a description">
+    <button id="generateImage">Generate Image</button>
+    <img id="generatedImage" src="" alt="Generated Image">
+
+    <script>
+        document.getElementById("generateImage").addEventListener("click", async () => {
+            const description = document.getElementById("description").value;
+            const response = await fetch("/api/generate_image", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ description }),
+            });
+
+            const data = await response.json();
+            document.getElementById("generatedImage").src = data.image_url;
+        });
+    </script>
+</body>
+</html>
