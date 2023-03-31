@@ -1,5 +1,5 @@
 flask~=1.1.2
-openai~=0.27.2
+openai==0.27.2
 aiohttp==3.7.4
 async-timeout==3.0.1
 attrs==19.3.0
