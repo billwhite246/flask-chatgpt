@@ -21,6 +21,11 @@ def hello_world():
     return render_template('index.html')
 
 
+@app.route('/img')
+def hello_world():
+    return render_template('img.html')
+
+
 @app.route('/test/chat', methods=['GET'])
 def chat_with_gpt():
     prompt = "What is the capital of France?"
