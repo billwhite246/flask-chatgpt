@@ -53,7 +53,7 @@ def chat():
 
     try:
         # 调用ChatGPT API
-        response = openai.Completion.create(
+        response = openai.ChatCompletion.create(
             engine="gpt-3.5-turbo",
             prompt=f"{conversation}\nChatbot:",
             temperature=0.8,
