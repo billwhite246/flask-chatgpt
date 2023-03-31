@@ -4,8 +4,8 @@ import openai
 from flask import Flask, request, jsonify, render_template
 
 # 从环境变量中获取API密钥
-# api_key = os.getenv('OPENAI_API_KEY')
-api_key = "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"
+api_key = os.getenv('OPENAI_API_KEY')
+# api_key = "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"
 
 if not api_key:
     raise ValueError("OPENAI_API_KEY environment variable is required")
