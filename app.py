@@ -26,6 +26,11 @@ def hello_world_img():
     return render_template('img.html')
 
 
+@app.route('/gpt35')
+def hello_world_gpt35():
+    return render_template('gpt35.html')
+
+
 @app.route('/test/chat', methods=['GET'])
 def chat_with_gpt():
     prompt = "What is the capital of France?"
@@ -44,13 +49,13 @@ def chat_with_gpt():
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
-    user_message = request.json.get('message', '')
+    conversation = request.json.get('conversation', '')
 
     try:
         # 调用ChatGPT API
         response = openai.Completion.create(
-            engine="text-davinci-002",
-            prompt=f"User: {user_message}\nChatbot:",
+            engine="gpt-3.5-turbo",
+            prompt=f"{conversation}\nChatbot:",
             temperature=0.8,
             max_tokens=150,
             top_p=1,
@@ -61,10 +66,11 @@ def chat():
 
         bot_response = response.choices[0].text.strip()
     except Exception as e:
-        print(f"Error: {e}", file=sys.stderr)
+        print(f"Error: {e}")
         bot_response = "抱歉，我无法回答你的问题。"
 
     return jsonify({'response': bot_response})
+
 
 
 @app.route('/api/generate_image', methods=['POST'])
