@@ -1,8 +1,8 @@
 import os
 import sys
+
 import openai
 from flask import Flask, request, jsonify, render_template
-import base64
 
 # 从环境变量中获取API密钥
 api_key = os.getenv('OPENAI_API_KEY')
