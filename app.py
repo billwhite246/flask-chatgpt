@@ -22,7 +22,7 @@ def hello_world():
 
 
 @app.route('/img')
-def hello_world():
+def hello_world_img():
     return render_template('img.html')
 
 
